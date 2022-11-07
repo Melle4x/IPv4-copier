@@ -1,0 +1,50 @@
+#!/bin/sh
+
+By='\033[1;32m'
+Br='\033[1;31m'
+Bb='\033[1;34m'
+w='\033[0;37m'
+g='\033[0;33m'
+name=${0##*/}
+prefix=$g'<['$name']>'
+
+interface_arg=$1
+
+# show general info and usage
+show_info() {
+	echo $prefix $w'Version: 1.0'
+	echo $prefix $w'Purpose: Copies IPv4 address of given interface to clipboard'
+	echo $prefix $w'Usage:' $Bb$name '[interface]'
+}
+
+is_installed() {
+     dpkg --verify "$1" 2>/dev/null
+}
+
+# check if xclip is installed
+if ! is_installed 'xclip'; then
+	show_info
+	echo ''
+	echo $prefix $w'Missing requirement:' $Br'xclip'
+	echo $prefix $w'Install xclip with command:' $By'sudo apt-get install xclip'
+	exit
+fi
+
+# check if interface argument is given
+if [ -z "$interface_arg" ]; then
+	show_info
+else
+	# parsing "ip -br a" stdout
+	full_line=$(ip -br a | grep ^"$interface_arg" | head -n 1)
+	interface=$(echo $full_line | awk '{ print$1 }')
+	ipv4=$(echo $full_line | awk '{ print$3 }' | cut -d '/' -f1)
+
+	# check if given interface is found
+	if [ -z "$interface" ]; then
+		echo $prefix $w'No interface found with:' $Br$1
+	else
+		# copy IPv4 address to clipboard
+		echo -n $ipv4 | xclip -sel clip
+		echo $prefix $w$interface':' $By$ipv4
+	fi
+fi
