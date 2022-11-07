@@ -8,4 +8,4 @@ Usage: xx [interface]
 ### Installation
 Place the file in your `/usr/bin` directory to execute the command from anywhere.
 
-Rename the file to your prefered "shortcut".
+Rename the file to your preferred "shortcut".
