@@ -6,5 +6,6 @@ Purpose: Copies IPv4 address of given interface to clipboard
 Usage: xx [interface]
 ```
 ### Installation
-Place the file in your /usr/bin directory. Execute command from anywhere.
-Rename the file to your prefereed "shortcut".
+Place the file in your /usr/bin directory to Execute command from anywhere.
+
+Rename the file to your prefered "shortcut".
